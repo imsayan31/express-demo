@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 const courses = [
     {id:1, name: 'Course 1'},
     {id:2, name: 'Course 2'},
@@ -26,10 +28,26 @@ app.get('/api/courses/:id', (req, res) => {
 
 });
 
+/* Use POST method */
+app.post('/api/courses', (req, res) => {
+    if(!req.body.name || req.body.name.length < 3){
+        //400 - Bad Request
+        res.status(400).send('Name is required and should be at least of 3 characters');
+        return;
+    }
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    }
+    courses.push(course);
+    res.send(courses);
+});
+
 /* app.get('/api/courses/:year/:month', (req, res) => {
     res.send(req.params);
 }); */
 
+/* Query parameter checking */
 app.get('/api/courses/:year/:month', (req, res) => {
     res.send(req.query);
     res.send(req.params);
