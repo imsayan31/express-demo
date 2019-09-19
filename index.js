@@ -43,6 +43,30 @@ app.post('/api/courses', (req, res) => {
     res.send(courses);
 });
 
+/* PUT a course */
+app.put('/api/courses:id', (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if(!course)
+        res.status(404).send("The course ID not found");
+
+    course.name = req.body.name;
+    res.send(course);
+
+});
+
+/* DELETE a course */
+app.delete('/api/courses:id', (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if(!course)
+        res.status(404).send("The course ID not found");
+
+    const index = courses.indexOf(course);    
+    courses.splice(index, 1);
+
+    res.send(course);
+
+});
+
 /* app.get('/api/courses/:year/:month', (req, res) => {
     res.send(req.params);
 }); */
